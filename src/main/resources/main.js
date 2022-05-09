@@ -44,7 +44,7 @@ function task() {
 
 		const createNodeParams1 = {
 			_indexConfig: {
-				configs: [{
+				configs: [{ // Looks like it uses the last entry and ignored the two first ones!
 					config: {
 						decideByType: false,
 						enabled: false,
@@ -56,19 +56,19 @@ function task() {
 						languages: []
 					},
 					path: 'manycase'
-				},{
+				},{ // Looks like it uses the last entry and ignored the two first ones!
 					config: {
 						decideByType: false,
-						enabled: true,
+						enabled: false,
 						nGram: false,
-						fulltext: true,
-						includeInAllText: true,
+						fulltext: false,
+						includeInAllText: false,
 						path: false,
 						indexValueProcessors: [],
 						languages: []
 					},
 					path: 'manyCase'
-				},{
+				},{ // Looks like it uses the last entry and ignored the two first ones!
 					config: {
 						decideByType: false,
 						enabled: true,
@@ -105,15 +105,16 @@ function task() {
 				postTag: '</b>',
 				preTag: '<b>',
 				properties: {
-					_alltext: {},
-					manycase: {},
-					manyCase: {},
-					MANYCASE: {}
+					_allText: {}, // Gets lowercased
+					//_alltext: {},
+					//manycase: {},
+					manyCase: {}, // Gets lowercased
+					MANYCASE: {} // Gets lowercased
 				}
 			},
-			query: "fulltext('manycase', 'smallcase')"
+			query: "fulltext('manycase,manyCase,MANYCASE,_alltext', 'smallcase')"
 		});
-		//log.debug(`queryRes1:${toStr(queryRes1)}`);
+		log.info(`queryRes1:${toStr(queryRes1)}`);
 
 		queryRes1.hits = queryRes1.hits.map((hit) => {
 			const node = connection1.get(hit.id);
