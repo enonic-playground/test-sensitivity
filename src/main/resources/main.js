@@ -100,6 +100,17 @@ function task() {
 		connection1.refresh();
 
 		const queryRes1 = connection1.query({
+			highlight: {
+				numberOfFragments: 1,
+				postTag: '</b>',
+				preTag: '<b>',
+				properties: {
+					_alltext: {},
+					manycase: {},
+					manyCase: {},
+					MANYCASE: {}
+				}
+			},
 			query: "fulltext('manycase', 'smallcase')"
 		});
 		//log.debug(`queryRes1:${toStr(queryRes1)}`);
