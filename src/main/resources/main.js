@@ -43,6 +43,46 @@ function task() {
 		}
 
 		const createNodeParams1 = {
+			_indexConfig: {
+				configs: [{
+					config: {
+						decideByType: false,
+						enabled: false,
+						nGram: false,
+						fulltext: false,
+						includeInAllText: false,
+						path: false,
+						indexValueProcessors: [],
+						languages: []
+					},
+					path: 'manycase'
+				},{
+					config: {
+						decideByType: false,
+						enabled: true,
+						nGram: false,
+						fulltext: true,
+						includeInAllText: true,
+						path: false,
+						indexValueProcessors: [],
+						languages: []
+					},
+					path: 'manyCase'
+				},{
+					config: {
+						decideByType: false,
+						enabled: true,
+						nGram: false,
+						fulltext: true,
+						includeInAllText: true,
+						path: false,
+						indexValueProcessors: [],
+						languages: []
+					},
+					path: 'MANYCASE'
+				}], // configs
+				default: 'none'
+			},
 			_name: '1',
 			manycase: 'smallcase',
 			manyCase: 'camelCase',
@@ -51,13 +91,33 @@ function task() {
 		log.debug(`createNodeParams1:${toStr(createNodeParams1)}`);
 		try {
 			const createdNode1 = connection1.create(createNodeParams1);
-			log.info(`createdNode1:${toStr(createdNode1)}`);
+			//log.info(`createdNode1:${toStr(createdNode1)}`);
 		} catch (e) {
 			if (e.class.name !== 'com.enonic.xp.node.NodeAlreadyExistAtPathException') {
 				log.error(`e.class.name:${toStr(e.class.name)} e.message:${toStr(e.message)}`, e);
 			}
 		}
 		connection1.refresh();
+
+		const queryRes1 = connection1.query({
+			query: "fulltext('manycase', 'smallcase')"
+		});
+		//log.debug(`queryRes1:${toStr(queryRes1)}`);
+
+		queryRes1.hits = queryRes1.hits.map((hit) => {
+			const node = connection1.get(hit.id);
+			return {
+				highlight: hit.highlight,
+				id: hit.id,
+				node: {
+					manycase: node.manycase,
+					manyCase: node.manyCase,
+					MANYCASE: node.MANYCASE
+				},
+				score: hit.score
+			};
+		});
+		log.info(`queryRes1 mapped:${toStr(queryRes1)}`);
 	}); // run
 } // task
 
