@@ -43,8 +43,8 @@ function task() {
 		}
 
     const createNodeParams1 = {
-			_name: '1',
-			manycase: 'smallcase',
+      _name: '1',
+      manycase: 'smallcase',
       manyCase: 'camelCase',
       MANYCASE: 'UPPERCASE'
 		};
