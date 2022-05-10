@@ -80,13 +80,26 @@ function task() {
 						languages: []
 					},
 					path: 'MANYCASE'
+				},{
+					config: {
+						decideByType: false,
+						enabled: true,
+						nGram: true,
+						fulltext: true,
+						includeInAllText: true,
+						path: false,
+						indexValueProcessors: [],
+						languages: []
+					},
+					path: 'æøå'
 				}], // configs
 				default: 'none'
 			},
 			_name: '1',
 			manycase: 'smallcase',
 			manyCase: 'camelCase',
-			MANYCASE: 'UPPERCASE'
+			MANYCASE: 'UPPERCASE',
+			æøå: 'æøå'
 		};
 		log.debug(`createNodeParams1:${toStr(createNodeParams1)}`);
 		try {
@@ -109,10 +122,12 @@ function task() {
 					//_alltext: {},
 					//manycase: {},
 					manyCase: {}, // Gets lowercased
-					MANYCASE: {} // Gets lowercased
+					MANYCASE: {}, // Gets lowercased
+					æøå: {}
 				}
 			},
 			query: "fulltext('manycase,manyCase,MANYCASE,_alltext', 'smallcase')"
+			//query: "ngram('æøå', 'æ')"
 		});
 		log.info(`queryRes1:${toStr(queryRes1)}`);
 
@@ -124,7 +139,8 @@ function task() {
 				node: {
 					manycase: node.manycase,
 					manyCase: node.manyCase,
-					MANYCASE: node.MANYCASE
+					MANYCASE: node.MANYCASE,
+					æøå: node.æøå
 				},
 				score: hit.score
 			};
