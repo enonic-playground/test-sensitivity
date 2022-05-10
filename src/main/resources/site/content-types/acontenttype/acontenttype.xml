@@ -1,0 +1,11 @@
+<content-type xmlns="urn:enonic:xp:model:1.0">
+  <display-name>A content type</display-name>
+  <description>A content type description</description>
+  <super-type>base:structured</super-type>
+  <form>
+    <input type="æøå" name="location"><!-- Error when saving in Content Studio: Invalid proerty for content -->
+      <label>ÆØÅ æøå</label>
+      <occurrences minimum="0" maximum="1"/>
+    </input>
+  </form>
+</content-type>
