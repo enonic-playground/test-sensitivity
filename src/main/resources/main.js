@@ -113,6 +113,28 @@ function task() {
 		connection1.refresh();
 
 		const queryRes1 = connection1.query({
+			aggregations: {
+				myCountAggregation1: {
+					count: {
+						field: 'manycase'
+					}
+				},
+				myCountAggregation2: {
+					count: {
+						field: 'manyCase'
+					}
+				},
+				myCountAggregation3: {
+					count: {
+						field: 'MANYCASE'
+					}
+				},
+				myCountAggregation4: {
+					count: {
+						field: 'æøå'
+					}
+				}
+			},
 			highlight: {
 				numberOfFragments: 1,
 				postTag: '</b>',
